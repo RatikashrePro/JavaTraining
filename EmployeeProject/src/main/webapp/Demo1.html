@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Registration</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding-top: 60px; /* space above container */
+    }
+
+    .container {
+      background: #fff;
+      padding: 35px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      width: 420px;
+     
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #333;
+      text-align: center;
+      font-size: 26px;
+      letter-spacing: 1px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    input:focus {
+      border: 1px solid #6a82fb;
+      outline: none;
+      box-shadow: 0 0 6px rgba(106, 130, 251, 0.5);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #6a82fb, #56ccf2);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+      margin-top: 5px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #5a73f0, #3dbde0);
+    }
+
+    .error {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Employee Registration</h2>
+
+    <form id="empForm" action="FirstServlet">
+      <div class="form-group">
+        <label for="id">Employee ID:</label>
+        <input type="number" id="id" name="id" required>
+        <div class="error" id="idError"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <div class="error" id="nameError"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+        <div class="error" id="ageError"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="salary">Salary:</label>
+        <input type="number" id="salary" name="salary" step="0.01" required>
+        <div class="error" id="salaryError"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="desig">Designation:</label>
+        <input type="text" id="desig" name="desig" required>
+        <div class="error" id="desigError"></div>
+      </div>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("empForm").addEventListener("submit", function(e) {
+      let valid = true;
+
+      // Clear previous errors
+      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+      // Employee ID validation
+      const id = document.getElementById("id").value.trim();
+      if (id === "" || id <= 0) {
+        document.getElementById("idError").textContent = "Please enter a valid Employee ID.";
+        valid = false;
+      }
+
+      // Name validation (only letters allowed)
+      const name = document.getElementById("name").value.trim();
+      if (!/^[a-zA-Z ]+$/.test(name)) {
+        document.getElementById("nameError").textContent = "Name should contain only letters.";
+        valid = false;
+      }
+
+      // Age validation (must be 18–60)
+      const age = parseInt(document.getElementById("age").value);
+      if (isNaN(age) || age < 18 || age > 60) {
+        document.getElementById("ageError").textContent = "Age must be between 18 and 60.";
+        valid = false;
+      }
+
+      // Salary validation (must be >= 25000)
+      const salary = parseFloat(document.getElementById("salary").value);
+      if (isNaN(salary) || salary < 25000) {
+        document.getElementById("salaryError").textContent = "Salary must be at least 25,000.";
+        valid = false;
+      }
+
+      // Designation validation (at least 2 characters)
+      const desig = document.getElementById("desig").value.trim();
+      if (desig.length < 2) {
+        document.getElementById("desigError").textContent = "Enter a valid designation.";
+        valid = false;
+      }
+
+      if (!valid) e.preventDefault();
+    });
+  </script>
+
+</body>
+</html>

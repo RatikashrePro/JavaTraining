@@ -1,0 +1,4 @@
+1, Ratika, IT, 1.0E7
+1, ratika, it, 999999.0
+1, ratika, it, 200000.0
+

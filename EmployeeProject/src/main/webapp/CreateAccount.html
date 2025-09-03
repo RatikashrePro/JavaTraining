@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Account</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 40px 0;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 15px; /* slightly reduced */
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 25px;
+      width: 380px;
+      margin: auto;
+      border-radius: 18px;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+
+    .form-container:hover {
+      transform: scale(1.03);
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 6px 0 3px; /* reduced spacing */
+      font-weight: bold;
+      color: #444;
+    }
+
+    input {
+      width: 85%;
+      padding: 8px; /* slightly smaller padding */
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 8px; /* reduced spacing between fields */
+      outline: none;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+
+    input:focus {
+      border-color: #66a6ff;
+      box-shadow: 0 0 5px rgba(102, 166, 255, 0.5);
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      width: 100%;
+      transition: 0.3s;
+      margin-top: 10px; /* keeps some breathing space before button */
+    }
+
+    button:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>➕ Create Account</h1>
+  <div class="form-container">
+    <form action="createAccount" method="post">
+      <label for="id">Customer ID</label>
+      <input type="text" id="id" name="id" required>
+
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="accno">Account Number</label>
+      <input type="text" id="accno" name="accno" required>
+
+      <label for="ifsc">IFSC Code</label>
+      <input type="text" id="ifsc" name="ifsc" required>
+
+      <label for="balance">Initial Balance</label>
+      <input type="number" id="balance" name="balance" min="0" required>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+
+      <button type="submit">✅ Create Account</button>
+    </form>
+  </div>
+</body>
+</html>

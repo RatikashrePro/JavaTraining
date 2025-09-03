@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Banking Home</title>
+<style>
+    /* General Page Style */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #43cea2, #185a9d);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .home-container {
+        background: #fff;
+        border-radius: 20px;
+        padding: 40px;
+        width: 350px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 {
+        margin-bottom: 30px;
+        color: #333;
+        font-size: 26px;
+        letter-spacing: 1px;
+    }
+
+    /* Button Style */
+    .btn {
+        background: #185a9d;
+        color: white;
+        padding: 15px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: bold;
+        display: block;
+        margin: 15px auto;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255,255,255,0.15);
+        transform: rotate(45deg);
+        transition: 0.5s;
+    }
+
+    .btn:hover::before {
+        top: -30%;
+        left: -30%;
+    }
+
+    .btn:hover {
+        background: #0f4c75;
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    }
+
+    /* Icon Style */
+    .btn span {
+        font-size: 22px;
+        margin-right: 8px;
+    }
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body>
+
+<div class="home-container">
+    <h1>🏦 Banking Home</h1>
+    <a href="CreateAccount.html" class="btn"><span>➕</span>Create Account</a>
+    <a href="CheckBalance.html" class="btn"><span>💰</span>Check Balance</a>
+    <a href="Deposit.html" class="btn"><span>📥</span>Deposit Money</a>
+    <a href="Withdraw.html" class="btn"><span>📤</span>Withdraw Money</a>
+    <a href="DeleteAccount.html" class="btn"><span>❌</span>Delete Account</a>
+</div>
+<script>
+window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    const msg = params.get("message");
+    if (msg) {
+      // Create a banner dynamically
+      const banner = document.createElement("div");
+      banner.innerText = msg;
+      banner.style.background = "#d4edda";
+      banner.style.color = "#155724";
+      banner.style.padding = "15px";
+      banner.style.margin = "20px auto";
+      banner.style.width = "50%";
+      banner.style.border = "1px solid #c3e6cb";
+      banner.style.borderRadius = "8px";
+      banner.style.fontWeight = "bold";
+      banner.style.boxShadow = "0px 4px 12px rgba(0,0,0,0.2)";
+      document.body.prepend(banner);
+    }
+  }</script>
+</body>
+</html>

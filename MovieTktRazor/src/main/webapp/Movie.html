@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vetri Theatre Booking</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #111;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background: #0ef;
+      color: #111;
+      padding: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    /* Curved cinema screen */
+    .screen {
+      position: relative;
+      margin: 2rem auto 1rem auto;
+      width: 80%;
+      height: 40px;
+      background: linear-gradient(to right, #0ef, #08f);
+      border-radius: 0 0 80% 80%;
+      box-shadow: 0 8px 30px rgba(0,238,255,0.7);
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1rem;
+      transform: perspective(600px) rotateX(25deg);
+    }
+
+    .screen::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: radial-gradient(ellipse at center, rgba(0,238,255,0.3), transparent 70%);
+      filter: blur(12px);
+      z-index: -1;
+    }
+
+    .seating-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 1rem auto;
+      gap: 0.4rem;
+    }
+
+    .row-grid {
+      display: grid;
+      grid-template-columns: auto repeat(4, 1fr) 1rem repeat(10, 1fr) 1rem repeat(4, 1fr) auto;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .seat {
+      background: #222;
+      border: 1px solid #555;
+      border-radius: 4px;
+      height: 28px;
+      width: 28px;
+      cursor: pointer;
+      font-size: 0.7rem;
+      color: #ccc;
+      transition: all 0.2s ease;
+      margin: 2px;
+    }
+
+    .row-label {
+      color: #0ef;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .seat:hover {
+      transform: scale(1.1);
+      background: #333;
+    }
+
+    .seat.elite {
+      border-color: gold;
+    }
+
+    .seat.affordable {
+      border-color: lightgreen;
+    }
+
+    .seat.selected {
+      background: #0ef;
+      color: #111;
+      font-weight: bold;
+    }
+
+    .seat.occupied {
+      background: #444;
+      color: #666;
+      cursor: not-allowed;
+    }
+
+    .aisle {
+      width: 0.5rem;
+    }
+
+    .summary {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #222;
+      display: inline-block;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #0ef;
+    }
+
+    .summary button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background: #0ef;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #111;
+      transition: 0.3s;
+    }
+
+    .summary button:disabled {
+      background: #444;
+      color: #aaa;
+      cursor: not-allowed;
+    }
+
+    .summary button:hover:not(:disabled) {
+      background: #08f;
+      box-shadow: 0 0 10px #0ef;
+    }
+
+    footer {
+      margin-top: 2rem;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: #888;
+      background: #111;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎟 Vetri Theatre - Chennai</h1>
+    <p>Select Your Seats</p>
+  </header>
+
+  <main>
+    <!-- Seating Layout -->
+    <div id="seatingWrap" class="seating-wrap"></div>
+
+    <!-- Realistic curved cinema screen at the bottom -->
+    <div class="screen">SCREEN THIS WAY</div>
+
+    <!-- Booking Summary -->
+    <div class="summary">
+      <p>Tickets Selected: <span id="count">0</span></p>
+      <p>Total Price: ₹<span id="total">0</span></p>
+      <button id="bookBtn" disabled>Book Tickets</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Vetri Theatre | Ticket Booking Demo</p>
+  </footer>
+
+  <script>
+    const rows = ["A","B","C","D","E","F","G","H","I","J","K","L","M"];
+    const eliteRows = new Set(["A","B","C","D","E","F","G","H","I","J"]);
+    const prices = { elite: 200, affordable: 100 };
+
+    const seatingWrap = document.getElementById('seatingWrap');
+    const countEl = document.getElementById('count');
+    const totalEl = document.getElementById('total');
+    const bookBtn = document.getElementById('bookBtn');
+
+    // generate seat layout
+    rows.forEach(rowLabel => {
+      const rowGrid = document.createElement('div');
+      rowGrid.className = 'row-grid';
+      
+      const leftLabel = document.createElement('div');
+      leftLabel.className = 'row-label';
+      leftLabel.textContent = rowLabel;
+      rowGrid.appendChild(leftLabel);
+
+      const category = eliteRows.has(rowLabel) ? 'elite' : 'affordable';
+      let seatNo = 1;
+
+      // left block 4 seats
+      for (let i = 0; i < 4; i++) rowGrid.appendChild(makeSeat(rowLabel, seatNo++, category));
+      rowGrid.appendChild(document.createElement('div')).className = 'aisle';
+
+      // middle block 10 seats
+      for (let i = 0; i < 10; i++) rowGrid.appendChild(makeSeat(rowLabel, seatNo++, category));
+      rowGrid.appendChild(document.createElement('div')).className = 'aisle';
+
+      // right block 4 seats
+      for (let i = 0; i < 4; i++) rowGrid.appendChild(makeSeat(rowLabel, seatNo++, category));
+
+      const rightLabel = document.createElement('div');
+      rightLabel.className = 'row-label';
+      rowGrid.appendChild(rightLabel);
+
+      seatingWrap.appendChild(rowGrid);
+    });
+
+    // seat creation function
+    function makeSeat(row, num, category) {
+      const seat = document.createElement('button');
+      seat.type = 'button';
+      seat.className = `seat ${category}`;
+      seat.dataset.price = prices[category];
+      seat.dataset.seatId = row + num;
+      seat.textContent = num;
+      
+      if (Math.random() < 0.05) seat.classList.add('occupied');
+
+      seat.addEventListener('click', () => {
+        if (seat.classList.contains('occupied')) return;
+        seat.classList.toggle('selected');
+        updateSummary();
+      });
+      return seat;
+    }
+
+    // update summary
+    function updateSummary() {
+      const selected = document.querySelectorAll('.seat.selected');
+      countEl.textContent = selected.length;
+      let total = 0;
+      selected.forEach(s => total += +s.dataset.price);
+      totalEl.textContent = total;
+      bookBtn.disabled = selected.length === 0;
+    }
+
+    // Razorpay checkout with redirect
+    bookBtn.addEventListener('click', () => {
+      const selected = [...document.querySelectorAll('.seat.selected')].map(s => s.dataset.seatId);
+      const totalAmount = +totalEl.textContent * 100;
+
+      var options = {
+        "key": "rzp_test_RAcrcsvl0NDGPs", // 🔑 replace with your Razorpay Key
+        "amount": totalAmount,
+        "currency": "INR",
+        "name": "Vetri Theatre",
+        "description": `Booking for seats: ${selected.join(", ")}`,
+        "redirect": true,   // 👈 enables redirect instead of popup
+        "prefill": {
+          "name": "Your Name",
+          "email": "user@example.com",
+          "contact": "9876543210"
+        },
+        "theme": { "color": "#0ef" }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    });
+  </script>
+</body>
+</html>

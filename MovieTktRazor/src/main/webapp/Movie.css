@@ -1,0 +1,229 @@
+/* Core fonts & neon theme */
+body {
+  margin: 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: #181529;
+  color: #f0f1f1;
+}
+.neon {
+  color: #00f0ff;
+  text-shadow: 0 0 6px #00f0ff;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1b182d;
+  padding: 16px 32px;
+}
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.nav-menu {
+  display: flex;
+  list-style: none;
+}
+.nav-menu li a {
+  color: #f0f1f1;
+  margin: 0 12px;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s;
+}
+.nav-menu li a.active, .nav-menu li a:hover {
+  color: #00f0ff;
+  border-bottom: 2px solid #00f0ff;
+}
+.banner {
+  position: relative;
+  background: #12101e;
+  text-align: center;
+  padding: 60px 0 30px;
+}
+.banner-slider img {
+  max-width: 380px;
+  margin: 0 8px;
+  border-radius: 16px;
+  box-shadow: 0 0 18px #212050;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.banner-title {
+  margin-top: 32px;
+  font-size: 2.2rem;
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px;
+  margin: 48px auto;
+}
+.movie-card {
+  background: #22203a;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #00f0ff44;
+  padding: 18px;
+  width: 230px;
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.movie-card:hover {
+  transform: translateY(-10px) scale(1.04);
+  box-shadow: 0 0 24px #00f0ff99;
+}
+.movie-card img {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.rating {
+  color: #f1c40f;
+  font-size: 1rem;
+  margin: 8px;
+}
+.price {
+  font-size: 1.2rem;
+  margin-left: 8px;
+}
+.book-btn {
+  background: linear-gradient(90deg, #172b3a 20%, #00f0ff 80%);
+  border: none;
+  border-radius: 8px;
+  color: #181529;
+  padding: 10px 24px;
+  font-size: 1rem;
+  margin-top: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 4px #00f0ff;
+  transition: background 0.3s, color 0.3s;
+}
+.book-btn:hover {
+  background: #00f0ff;
+  color: #101021;
+}
+.booking {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #232040;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 0 24px #00f0ff44;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.screen {
+  background: #35325e;
+  box-shadow: 0 0 18px #212050;
+  height: 40px;
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.seating {
+  display: grid;
+  grid-template-columns: repeat(6, 34px);
+  gap: 12px;
+  margin: 24px 0;
+}
+.seat {
+  background: #24213f;
+  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 4px #00f0ff22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seat.selected {
+  background: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff89;
+}
+.seat.occupied {
+  background: #55526b;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+form#user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 18px 0;
+  width: 100%;
+}
+form#user-details input {
+  padding: 10px;
+  border-radius: 6px;
+  background: #190e39;
+  border: 1px solid #32306b;
+  color: #fff;
+  font-size: 1em;
+}
+.pay-btn {
+  background: linear-gradient(90deg, #172b3a 20%, #00f0ff 80%);
+  color: #181529;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 4px #00f0ff;
+  transition: background 0.3s, color 0.3s;
+}
+.pay-btn:hover {
+  background: #00f0ff;
+  color: #101021;
+}
+.loader {
+  border: 6px solid #232040;
+  border-top: 6px solid #00f0ff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+.cart-details {
+  margin: 18px 0;
+  font-size: 1.1em;
+}
+.confirmation {
+  max-width: 400px;
+  margin: 60px auto;
+  background: #22203a;
+  padding: 32px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 18px #00f0ff65;
+  color: #00f0ff;
+  font-size: 1.2em;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .gallery {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .movie-card {
+    width: 90vw;
+  }
+  .booking {
+    max-width: 98vw;
+    padding: 16px;
+  }
+}
